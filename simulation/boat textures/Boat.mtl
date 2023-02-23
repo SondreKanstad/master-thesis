@@ -1,0 +1,93 @@
+#
+# Boat.mtl
+#
+
+newmtl Model001_Material001
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd White.png
+
+newmtl Model001_Material002
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd Nero.png
+
+newmtl Model001_Material003
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/dinghyblack.png
+
+newmtl Model001_Material004
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/vehicle_generic_detail2.png
+
+newmtl Model001_Material005
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/vehicle_generic_glasswindows2.png
+
+newmtl Model001_Material006
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/feltzer_roof.png
+
+newmtl Model001_Material007
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/vehicle_generic_truck_interior.png
+
+newmtl Model001_Material008
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/vehicle_generic_carbon.png
+
+newmtl Model001_Material009
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/tropic_interior_ng.png
+
+newmtl Model001_Material010
+illum 2
+Kd 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ns 0.000000
+map_Kd C:\Stuff\CC\Models\Boats\Tropic/script_rt_dials_truck.png

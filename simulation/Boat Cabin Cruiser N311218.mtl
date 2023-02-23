@@ -1,0 +1,160 @@
+# 3ds Max Wavefront OBJ Exporter v0.94b - (c)2007 guruware
+# File Created: 31.12.2018 15:37:59
+
+newmtl white_st
+	Ns 70.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8353 0.5059 0.6157
+	Ks 0.6300 0.6300 0.6300
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\metal_gl.jpg
+	map_Kd D:\New folder 2\metal_gl.jpg
+	map_bump D:\New folder 2\metal_gl.jpg
+	bump D:\New folder 2\metal_gl.jpg
+
+newmtl black_st
+	Ns 70.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.3098 0.3098 0.3098
+	Ks 0.6300 0.6300 0.6300
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\text blk.jpg
+	map_Kd D:\New folder 2\text blk.jpg
+	map_bump -bm 0.3000 D:\New folder 2\text blk.jpg
+	bump -bm 0.3000 D:\New folder 2\text blk.jpg
+
+newmtl 003
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\dinghybl.jpg
+	map_Kd D:\New folder 2\dinghybl.jpg
+
+newmtl 004
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\vdetail2.jpg
+	map_Kd D:\New folder 2\vdetail2.jpg
+	map_bump -bm 0.3000 D:\New folder 2\vdetail2.jpg
+	bump -bm 0.3000 D:\New folder 2\vdetail2.jpg
+
+newmtl 005
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\windows2.jpg
+	map_Kd D:\New folder 2\windows2.jpg
+	map_bump -bm 0.3000 D:\New folder 2\windows2.jpg
+	bump -bm 0.3000 D:\New folder 2\windows2.jpg
+
+newmtl 006
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\feltzer.jpg
+	map_Kd D:\New folder 2\feltzer.jpg
+	map_bump -bm 0.3000 D:\New folder 2\feltzer.jpg
+	bump -bm 0.3000 D:\New folder 2\feltzer.jpg
+
+newmtl 007
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\truck_in.jpg
+	map_Kd D:\New folder 2\truck_in.jpg
+	map_bump -bm 0.3000 D:\New folder 2\truck_in.jpg
+	bump -bm 0.3000 D:\New folder 2\truck_in.jpg
+
+newmtl 008
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\v_carbon.jpg
+	map_Kd D:\New folder 2\v_carbon.jpg
+	map_bump -bm 0.3000 D:\New folder 2\v_carbon.jpg
+	bump -bm 0.3000 D:\New folder 2\v_carbon.jpg
+
+newmtl 009
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\tropic_i.jpg
+	map_Kd D:\New folder 2\tropic_i.jpg
+	map_bump -bm 0.3000 D:\New folder 2\tropic_i.jpg
+	bump -bm 0.3000 D:\New folder 2\tropic_i.jpg
+
+newmtl 010
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\New folder 2\script_r.jpg
+	map_Kd D:\New folder 2\script_r.jpg
+	map_bump -bm 0.3000 D:\New folder 2\script_r.jpg
+	bump -bm 0.3000 D:\New folder 2\script_r.jpg
