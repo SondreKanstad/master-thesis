@@ -108,21 +108,25 @@ def create_birds_eye_view_for_frame(frame):
         plt.ylim(-max_value -10, max_value +10)
 
         # Create a scatter plot
-        plt.scatter(0, 0, color='black', marker=">", label='Egoship')
+        plt.scatter(0, 0, color='black', marker=">", label='Egoship', s=200)
 
-        plt.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths')
+        plt.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=200)
 
-        plt.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions')
+        plt.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=200)
 
-        ax.legend(loc='upper left')
+        ax.legend(loc='upper left', fontsize=14)
 
         # Set the title and axis labels
         plt.title('Predictions for frame: ' + str(frame))
         plt.xlabel('')
         plt.ylabel('')
+        plt.savefig(f"../../Figures/bev-frame-{frame}", dpi=150)
 
         # Show the plot
-        plt.show()
+        #plt.show()
+        
         return fig, ax
+    else:
+        print(f"No predictions made for frame: {frame}")
     
-create_birds_eye_view_for_frame(2400)
+create_birds_eye_view_for_frame(1300)
