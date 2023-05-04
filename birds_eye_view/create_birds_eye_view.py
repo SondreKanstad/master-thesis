@@ -75,6 +75,85 @@ def create_birds_eye_view_for_frame(frame):
         return fig, ax
     else:
         print(f"No predictions made for frame: {frame}")
-    
-create_birds_eye_view_for_frame(1300)
 
+
+fig, ax = plt.subplots()
+def create_birds_eye_view_scatter(frame):
+    # Clear scene for animation
+    ax.clear()
+
+    def format_func(value, tick_number):
+        return f"{int(value)} m"
+
+    # Set the formatter function for the x and y axis tick labels
+    ax.xaxis.set_major_formatter(ticker.FuncFormatter(format_func))
+    ax.yaxis.set_major_formatter(ticker.FuncFormatter(format_func))
+    plt.xlabel('')
+    plt.ylabel('')
+
+    x_coordinates_gt = [ground_truth[0] for ground_truth in boat_pos_truth[frame]]
+    y_coordinates_gt = [ground_truth[1] for ground_truth in boat_pos_truth[frame]]
+
+    
+    #max_value_gt = max(np.max(np.abs(x_coordinates_gt)), np.max(np.abs(y_coordinates_gt)))
+    max_value = 100
+
+    if boat_pos_preds[frame]:
+        x_coordinates_pred = [pred[0] for pred in boat_pos_preds[frame]]
+        y_coordinates_pred = [pred[1] for pred in boat_pos_preds[frame]]
+
+        #max_value_pred = max(np.max(np.abs(x_coordinates_pred)), np.max(np.abs(y_coordinates_pred)))
+        #max_value = max(max_value_gt, max_value_pred)
+
+        # Highlight the field of view using a pie chart
+        theta_fov = np.linspace(-np.pi/2 + np.deg2rad(180-127)/2, np.pi/2 - np.deg2rad(180-127)/2, 100)
+        r_fov = np.tan(np.deg2rad(63.5)) * max_value
+        x_fov = np.concatenate([[0], r_fov*np.cos(theta_fov), [0]])
+        y_fov = np.concatenate([[0], r_fov*np.sin(theta_fov), [0]])
+
+        ax.set_facecolor((1.0, 0.0, 0.0, 0.5))
+        ax.fill(x_fov, y_fov, alpha=1, color='w')
+
+        # Create a scatter plot with limits centered around (0,0)
+        plt.xlim(-max_value -10, max_value +10)
+        plt.ylim(-max_value -10, max_value +10)
+
+        # Create a scatter plot for ego ship and ground truth
+        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=200)
+        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=200)
+        ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=200)
+
+        ax.legend(loc='upper left', fontsize=14)
+
+        # Set the title and axis labels
+        plt.title('Predictions for frame: ' + str(frame))
+        
+        #plt.savefig(f"../../Figures/bev-frame-{frame}", dpi=150)
+
+        # Show the plot
+        #plt.show()
+        
+        #return fig, ax
+    else:
+        plt.title('No predictions for frame: ' + str(frame))
+        plt.xlim(-max_value -10, max_value +10)
+        plt.ylim(-max_value -10, max_value +10)
+
+        # Highlight the field of view using a pie chart
+        theta_fov = np.linspace(-np.pi/2 + np.deg2rad(180-127)/2, np.pi/2 - np.deg2rad(180-127)/2, 100)
+        r_fov = np.tan(np.deg2rad(63.5)) * max_value
+        x_fov = np.concatenate([[0], r_fov*np.cos(theta_fov), [0]])
+        y_fov = np.concatenate([[0], r_fov*np.sin(theta_fov), [0]])
+        ax.set_facecolor((1.0, 0.0, 0.0, 0.5))
+        ax.fill(x_fov, y_fov, alpha=1, color='w')
+        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=200)
+        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=200)
+        ax.legend(loc='upper left', fontsize=14)
+        
+    
+#create_birds_eye_view_for_frame(1300)
+
+frames = 5999
+
+anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
+anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
