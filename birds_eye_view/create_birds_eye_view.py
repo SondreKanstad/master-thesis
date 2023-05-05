@@ -12,19 +12,17 @@ f2 = open("../simulated_data/ground_truth_3d.json")
 boat_pos_truth = json.load(f2)
 f2.close()
 
-
-
+f3 = open("../psudo_lidar/tracked_coord_preds.json")
+tracked_coordinate_predictions = json.load(f3)
+f3.close()
 
 def create_birds_eye_view_for_frame(frame):
     if boat_pos_preds[frame]:
-        x_coordinates_pred = [pred[0] for pred in boat_pos_preds[frame]]
-        y_coordinates_pred = [pred[1] for pred in boat_pos_preds[frame]]
+        x_coordinates_pred = [pred[0] for pred in tracked_coordinate_predictions[frame]]
+        y_coordinates_pred = [pred[1] for pred in tracked_coordinate_predictions[frame]]
 
         x_coordinates_gt = [ground_truth[0] for ground_truth in boat_pos_truth[frame]]
-        y_coordinates_gt = [ground_truth[1] for ground_truth in boat_pos_truth[frame]]
-
-        
-        
+        y_coordinates_gt = [ground_truth[1] for ground_truth in boat_pos_truth[frame]]        
 
         max_value_gt = max(np.max(np.abs(x_coordinates_gt)), np.max(np.abs(y_coordinates_gt)))
         max_value_pred = max(np.max(np.abs(x_coordinates_pred)), np.max(np.abs(y_coordinates_pred)))
@@ -64,8 +62,8 @@ def create_birds_eye_view_for_frame(frame):
 
         ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=250, zorder=2)
 
-        for pred in boat_pos_preds[frame]:
-            ax.annotate("#1", xy=(pred[0] - 3, pred[1] - 2), fontsize=9)
+        for pred in tracked_coordinate_predictions[frame]:
+            ax.annotate(f"#{pred[2]}", xy=(pred[0] - 3, pred[1] - 2), fontsize=9)
 
 
         ax.legend(loc='upper left', fontsize=14)
@@ -74,10 +72,10 @@ def create_birds_eye_view_for_frame(frame):
         plt.title('Predictions for frame: ' + str(frame))
         plt.xlabel('')
         plt.ylabel('')
-        plt.savefig(f"../../Figures/bev-frame-{frame}-with-track", dpi=150)
+        #plt.savefig(f"../../Figures/bev-frame-{frame}-with-track", dpi=150)
 
         # Show the plot
-        #plt.show()
+        plt.show()
         
         return fig, ax
     else:
@@ -106,8 +104,8 @@ def create_birds_eye_view_scatter(frame):
     max_value = 100
 
     if boat_pos_preds[frame]:
-        x_coordinates_pred = [pred[0] for pred in boat_pos_preds[frame]]
-        y_coordinates_pred = [pred[1] for pred in boat_pos_preds[frame]]
+        x_coordinates_pred = [pred[0] for pred in tracked_coordinate_predictions[frame]]
+        y_coordinates_pred = [pred[1] for pred in tracked_coordinate_predictions[frame]]
 
         #max_value_pred = max(np.max(np.abs(x_coordinates_pred)), np.max(np.abs(y_coordinates_pred)))
         #max_value = max(max_value_gt, max_value_pred)
@@ -132,8 +130,8 @@ def create_birds_eye_view_scatter(frame):
             ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 4, ground_truth[1] - 3), fontsize=9, zorder=1)
 
         ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=250)
-        for pred in boat_pos_preds[frame]:
-            ax.annotate("#1", xy=(pred[0] - 4, pred[1] - 3), fontsize=9)
+        for pred in tracked_coordinate_predictions[frame]:
+            ax.annotate(f"#{pred[2]}", xy=(pred[0] - 4, pred[1] - 3), fontsize=9)
 
         ax.legend(loc='upper left', fontsize=14)
 
@@ -167,7 +165,7 @@ def create_birds_eye_view_scatter(frame):
     
 #create_birds_eye_view_for_frame(1300)
 
-#frames = 6000
+frames = 1000
 
-#anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
-#anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
+anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
+anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
