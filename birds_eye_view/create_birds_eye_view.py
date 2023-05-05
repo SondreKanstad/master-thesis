@@ -129,11 +129,11 @@ def create_birds_eye_view_scatter(frame):
         ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
         ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=250)
         for index, ground_truth in enumerate(boat_pos_truth[frame]):
-            ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 3, ground_truth[1] - 2), fontsize=9, zorder=1)
+            ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 4, ground_truth[1] - 3), fontsize=9, zorder=1)
 
         ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=250)
         for pred in boat_pos_preds[frame]:
-            ax.annotate("#1", xy=(pred[0] - 3, pred[1] - 2), fontsize=9)
+            ax.annotate("#1", xy=(pred[0] - 4, pred[1] - 3), fontsize=9)
 
         ax.legend(loc='upper left', fontsize=14)
 
@@ -161,13 +161,13 @@ def create_birds_eye_view_scatter(frame):
         ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
         ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=250)
         for index, ground_truth in enumerate(boat_pos_truth[frame]):
-            ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 3, ground_truth[1] - 2), fontsize=9, zorder=1)
+            ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 4, ground_truth[1] - 3), fontsize=9, zorder=1)
         ax.legend(loc='upper left', fontsize=14)
         
     
-create_birds_eye_view_for_frame(1300)
+#create_birds_eye_view_for_frame(1300)
 
-#frames = 5999
+#frames = 6000
 
 #anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
 #anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
