@@ -55,11 +55,18 @@ def create_birds_eye_view_for_frame(frame):
         plt.ylim(-max_value -10, max_value +10)
 
         # Create a scatter plot
-        plt.scatter(0, 0, color='black', marker=">", label='Egoship', s=200)
+        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
 
-        plt.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=200)
+        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=250)
 
-        plt.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=200)
+        for index, ground_truth in enumerate(boat_pos_truth[frame]):
+            ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 3, ground_truth[1] - 2), fontsize=9, zorder=1)
+
+        ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=250, zorder=2)
+
+        for pred in boat_pos_preds[frame]:
+            ax.annotate("#1", xy=(pred[0] - 3, pred[1] - 2), fontsize=9)
+
 
         ax.legend(loc='upper left', fontsize=14)
 
@@ -67,7 +74,7 @@ def create_birds_eye_view_for_frame(frame):
         plt.title('Predictions for frame: ' + str(frame))
         plt.xlabel('')
         plt.ylabel('')
-        plt.savefig(f"../../Figures/bev-frame-{frame}", dpi=150)
+        plt.savefig(f"../../Figures/bev-frame-{frame}-with-track", dpi=150)
 
         # Show the plot
         #plt.show()
@@ -119,9 +126,9 @@ def create_birds_eye_view_scatter(frame):
         plt.ylim(-max_value -10, max_value +10)
 
         # Create a scatter plot for ego ship and ground truth
-        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=200)
-        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=200)
-        ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=200)
+        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
+        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=250)
+        ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=250)
 
         ax.legend(loc='upper left', fontsize=14)
 
@@ -146,14 +153,14 @@ def create_birds_eye_view_scatter(frame):
         y_fov = np.concatenate([[0], r_fov*np.sin(theta_fov), [0]])
         ax.set_facecolor((1.0, 0.0, 0.0, 0.5))
         ax.fill(x_fov, y_fov, alpha=1, color='w')
-        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=200)
-        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=200)
+        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
+        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=250)
         ax.legend(loc='upper left', fontsize=14)
         
     
-#create_birds_eye_view_for_frame(1300)
+create_birds_eye_view_for_frame(1300)
 
-frames = 5999
+#frames = 5999
 
-anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
-anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
+#anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
+#anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
