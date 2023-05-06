@@ -4,7 +4,7 @@ import matplotlib.ticker as ticker
 from matplotlib.animation import FuncAnimation
 import numpy as np
 
-f1 = open("../psudo_lidar/predictions.json")
+f1 = open("../psudo_lidar/predictions_new.json")
 boat_pos_preds = json.load(f1)
 f1.close()
 
@@ -165,7 +165,7 @@ def create_birds_eye_view_scatter(frame):
     
 #create_birds_eye_view_for_frame(1300)
 
-frames = 1000
+frames = 6000
 
 anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
 anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
