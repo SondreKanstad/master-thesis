@@ -9,7 +9,7 @@ def fuse_detections_with_tracks():
     right_camera_tracks = json.load(f2)
     f2.close()
 
-    f3 = open("../psudo_lidar/predictions.json")
+    f3 = open("../psudo_lidar/predictions_new.json")
     coord_preds = json.load(f3)
     f3.close()
 
@@ -17,8 +17,8 @@ def fuse_detections_with_tracks():
     
     for timeframe, predictions in enumerate(coord_preds):
             for prediction_index, prediction in enumerate(predictions):
-                if prediction_index < len(right_camera_tracks[timeframe]):
-                    track = right_camera_tracks[timeframe][prediction_index]
+                if prediction_index < len(left_camera_tracks[timeframe]):
+                    track = left_camera_tracks[timeframe][prediction_index]
                     prediction.append(track)
                     tracked_coord_preds[timeframe].append(prediction)
 
