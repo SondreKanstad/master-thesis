@@ -81,17 +81,17 @@ def create_birds_eye_view_for_frame(frame):
         plt.title('Predictions for frame: ' + str(frame))
         plt.xlabel('')
         plt.ylabel('')
-        #plt.savefig(f"../../Figures/bev-frame-{frame}-with-track", dpi=150)
+        plt.savefig(f"../../Figures/bev-frame-{frame}", dpi=150)
 
         # Show the plot
-        plt.show()
+        #plt.show()
         
         return fig, ax
     else:
         print(f"No predictions made for frame: {frame}")
 
 
-fig, ax = plt.subplots()
+#fig, ax = plt.subplots()
 def create_birds_eye_view_scatter(frame):
     # Clear scene for animation
     ax.clear()
@@ -179,6 +179,7 @@ def create_birds_eye_view_scatter(frame):
 #anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
 
 
+# Returns paths for all tracks in input
 def filter_path_of_tracks(tracked_predictions):
     path_of_tracks = {}
     for index, timeframe in enumerate(tracked_predictions):
@@ -203,9 +204,21 @@ def sort_tracks_by_length(tracks):
 
     longest_tracks = sorted(longest_tracks, key=lambda l:l[0], reverse=True)
     return longest_tracks
+
+
+def sort_best_tracks(tracks):
+    path_of_tracks = filter_path_of_tracks(tracks)
+    # Evaluate track quality
     
 
-def bev_path_of_tracks(track_coordinate_predictions, track_id, length_of_track):
+    # Sort by quality
+
+    # Return tracks
+    
+    return 
+    
+
+def bev_path_of_tracks(track_coordinate_predictions, track_id):
     fig, ax = plt.subplots()
     
     max_value = 100
@@ -219,10 +232,13 @@ def bev_path_of_tracks(track_coordinate_predictions, track_id, length_of_track):
     plot_fov(ax, max_value)
     ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
     
+    # Get paths of all tracks
     path_of_tracks = filter_path_of_tracks(track_coordinate_predictions)
 
-
+    # Get path of specific track
     coordinates = path_of_tracks[track_id]
+
+    print(coordinates)
 
     min_timeframe = min(coordinates['timeframe'])
     max_timeframe = max(coordinates['timeframe'])
@@ -239,36 +255,36 @@ def bev_path_of_tracks(track_coordinate_predictions, track_id, length_of_track):
             else:
                 ground_truth_paths[id] = {'x': [boat[0]], 'y': [boat[1]]}
 
-    #ax.plot(ground_truth_paths[0]['x'], ground_truth_paths[0]['y'], linewidth=2, c='blue', label=f'Path for ship #1')
-    #ax.scatter(ground_truth_paths[0]['x'][0], ground_truth_paths[0]['y'][0], s=200, c='blue')
-    #ax.scatter(ground_truth_paths[0]['x'][-1], ground_truth_paths[0]['y'][-1], marker='X', s=200, c='blue')
+    # ax.plot(ground_truth_paths[0]['x'], ground_truth_paths[0]['y'], linewidth=2, c='blue', label=f'Path for ship #1')
+    # ax.scatter(ground_truth_paths[0]['x'][0], ground_truth_paths[0]['y'][0], s=200, c='blue')
+    # ax.scatter(ground_truth_paths[0]['x'][-1], ground_truth_paths[0]['y'][-1], marker='X', s=200, c='blue')
 
-    #ax.plot(ground_truth_paths[1]['x'], ground_truth_paths[1]['y'], linewidth=3, c='yellow', label=f'Path for ship #2')
-    #ax.scatter(ground_truth_paths[1]['x'][0], ground_truth_paths[1]['y'][0], s=200, c='yellow')
-    #ax.scatter(ground_truth_paths[1]['x'][-1], ground_truth_paths[1]['y'][-1], marker='X', s=200, c='yellow')
+    # ax.plot(ground_truth_paths[1]['x'], ground_truth_paths[1]['y'], linewidth=3, c='yellow', label=f'Path for ship #2')
+    # ax.scatter(ground_truth_paths[1]['x'][0], ground_truth_paths[1]['y'][0], s=200, c='yellow')
+    # ax.scatter(ground_truth_paths[1]['x'][-1], ground_truth_paths[1]['y'][-1], marker='X', s=200, c='yellow')
 
-    #ax.plot(ground_truth_paths[2]['x'], ground_truth_paths[2]['y'], linewidth=3, c='green', label=f'Path for ship #3')
-    #ax.scatter(ground_truth_paths[2]['x'][0], ground_truth_paths[2]['y'][0], s=200, c='green')
-    #ax.scatter(ground_truth_paths[2]['x'][-1], ground_truth_paths[2]['y'][-1], marker='X', s=200, c='green')
+    # ax.plot(ground_truth_paths[2]['x'], ground_truth_paths[2]['y'], linewidth=3, c='green', label=f'Path for ship #3')
+    # ax.scatter(ground_truth_paths[2]['x'][0], ground_truth_paths[2]['y'][0], s=200, c='green')
+    # ax.scatter(ground_truth_paths[2]['x'][-1], ground_truth_paths[2]['y'][-1], marker='X', s=200, c='green')
 
-    ax.plot(ground_truth_paths[3]['x'], ground_truth_paths[3]['y'], linewidth=3, c='blue', label=f'Path for ship #4')
-    #ax.scatter(ground_truth_paths[3]['x'][0], ground_truth_paths[3]['y'][0], s=200, c='blue')
-    #ax.scatter(ground_truth_paths[3]['x'][-1], ground_truth_paths[3]['y'][-1], marker='X', s=200, c='blue')
+    # ax.plot(ground_truth_paths[3]['x'], ground_truth_paths[3]['y'], linewidth=3, c='blue', label=f'Path for ship #4')
+    # ax.scatter(ground_truth_paths[3]['x'][0], ground_truth_paths[3]['y'][0], s=200, c='blue')
+    # ax.scatter(ground_truth_paths[3]['x'][-1], ground_truth_paths[3]['y'][-1], marker='X', s=200, c='blue')
     
 
-    #ax.plot(ground_truth_paths[4]['x'], ground_truth_paths[4]['y'], linewidth=3, c='blue', label=f'Path for ship #5')
-    #ax.scatter(ground_truth_paths[4]['x'][0], ground_truth_paths[4]['y'][0], s=200, c='pink')
-    #ax.scatter(ground_truth_paths[4]['x'][-1], ground_truth_paths[4]['y'][-1], marker='X', s=200, c='pink')
+    # ax.plot(ground_truth_paths[4]['x'], ground_truth_paths[4]['y'], linewidth=3, c='blue', label=f'Path for ship #5')
+    # ax.scatter(ground_truth_paths[4]['x'][0], ground_truth_paths[4]['y'][0], s=200, c='pink')
+    # ax.scatter(ground_truth_paths[4]['x'][-1], ground_truth_paths[4]['y'][-1], marker='X', s=200, c='pink')
 
     ax.plot(coordinates['x'], coordinates['y'], label=f"Path for track #{track_id if track_id != None else 'None'}", c='orange', linewidth=3, alpha=0.9)
-    #ax.scatter(coordinates['x'][0], coordinates['y'][0], s=200, c='orange')
-    #ax.scatter(coordinates['x'][-1], coordinates['y'][-1], marker='X', s=200, c='orange')
+    ax.scatter(coordinates['x'][0], coordinates['y'][0], s=200, c='orange')
+    ax.scatter(coordinates['x'][-1], coordinates['y'][-1], marker='X', s=200, c='orange')
     
 
     ax.legend(loc='upper left', fontsize=11)
     plt.title(f'Frames {min_timeframe} to {max_timeframe}')
-    #plt.show()
-    plt.savefig(f"../../Figures/path-of-track-{track_id}", dpi=150)
+    plt.show()
+    #plt.savefig(f"../../Figures/path-of-track-{track_id}", dpi=150)
 
 
 #longest_track = sort_tracks_by_length(tracked_coordinate_predictions)[0]
@@ -276,3 +292,5 @@ def bev_path_of_tracks(track_coordinate_predictions, track_id, length_of_track):
 #longest_track = sort_tracks_by_length(tracked_coordinate_predictions)[2]
 
 #bev_path_of_tracks(tracked_coordinate_predictions, longest_track[1], longest_track[0])
+
+bev_path_of_tracks(tracked_coordinate_predictions, 318)
