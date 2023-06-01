@@ -12,17 +12,37 @@ f2 = open("../simulated_data/ground_truth_3d.json")
 boat_pos_truth = json.load(f2)
 f2.close()
 
-f3 = open("../psudo_lidar/tracked_coord_preds.json")
-tracked_coordinate_predictions = json.load(f3)
-f3.close()
+# f3 = open("../psudo_lidar/tracked_coord_preds.json")
+# tracked_coordinate_predictions = json.load(f3)
+# f3.close()
 
-def plot_fov(ax, max_value):
+f4 = open("../psudo_lidar/predictions_new_id.json")
+tracked_coordinate_predictions = json.load(f4)
+f4.close()
+
+f5 = open("../psudo_lidar/filtered_tracking.json")
+filtered_tracked_coordinate_predictions = json.load(f5)
+f5.close()
+
+
+def plot_fov(ax, max_value, without_zone_3):
     # Highlight the field of view using a pie chart
-    theta_fov = np.linspace(-np.pi/2 + np.deg2rad(180-127)/2, np.pi/2 - np.deg2rad(180-127)/2, 100)
+    # Original fov
+    if without_zone_3:
+        # FOV without zone 3
+        theta_fov = np.linspace(-np.pi/2 + np.deg2rad(180-84.56)/2, np.pi/2 - np.deg2rad(180-84.56)/2, 100)
+
+    else:
+        theta_fov = np.linspace(-np.pi/2 + np.deg2rad(180-127)/2, np.pi/2 - np.deg2rad(180-127)/2, 100)
+
+    
     r_fov = np.tan(np.deg2rad(63.5)) * max_value
     x_fov = np.concatenate([[0], r_fov*np.cos(theta_fov), [0]])
     y_fov = np.concatenate([[0], r_fov*np.sin(theta_fov), [0]])
-    ax.set_facecolor((1.0, 0.0, 0.0, 0.5))
+    # Red
+    #ax.set_facecolor((1.0, 0.0, 0.0, 0.5))
+    #
+    ax.set_facecolor("lightgray")
     ax.fill(x_fov, y_fov, alpha=1, color='w')
 
 def format_func(value, tick_number):
@@ -91,7 +111,7 @@ def create_birds_eye_view_for_frame(frame):
         print(f"No predictions made for frame: {frame}")
 
 
-#fig, ax = plt.subplots()
+fig, ax = plt.subplots()
 def create_birds_eye_view_scatter(frame):
     # Clear scene for animation
     ax.clear()
@@ -107,76 +127,92 @@ def create_birds_eye_view_scatter(frame):
 
     
     #max_value_gt = max(np.max(np.abs(x_coordinates_gt)), np.max(np.abs(y_coordinates_gt)))
+    
     max_value = 100
+    without_zone_3 = False
 
     if boat_pos_preds[frame]:
-        x_coordinates_pred = [pred[0] for pred in tracked_coordinate_predictions[frame]]
-        y_coordinates_pred = [pred[1] for pred in tracked_coordinate_predictions[frame]]
+        # Filtered track predictiosn
+        if without_zone_3:
+            x_coordinates_pred = [pred[0] for pred in filtered_tracked_coordinate_predictions[frame]]
+            y_coordinates_pred = [pred[1] for pred in filtered_tracked_coordinate_predictions[frame]]
+            plot_fov(ax, max_value=max_value, without_zone_3=without_zone_3)
+
+        # Track predictions with zone 3
+        else:
+            x_coordinates_pred = [pred[0] for pred in tracked_coordinate_predictions[frame]]
+            y_coordinates_pred = [pred[1] for pred in tracked_coordinate_predictions[frame]]
+            plot_fov(ax, max_value=max_value, without_zone_3=without_zone_3)
+       
 
         #max_value_pred = max(np.max(np.abs(x_coordinates_pred)), np.max(np.abs(y_coordinates_pred)))
         #max_value = max(max_value_gt, max_value_pred)
-
-        # Highlight the field of view using a pie chart
-        theta_fov = np.linspace(-np.pi/2 + np.deg2rad(180-127)/2, np.pi/2 - np.deg2rad(180-127)/2, 100)
-        r_fov = np.tan(np.deg2rad(63.5)) * max_value
-        x_fov = np.concatenate([[0], r_fov*np.cos(theta_fov), [0]])
-        y_fov = np.concatenate([[0], r_fov*np.sin(theta_fov), [0]])
-
-        ax.set_facecolor((1.0, 0.0, 0.0, 0.5))
-        ax.fill(x_fov, y_fov, alpha=1, color='w')
 
         # Create a scatter plot with limits centered around (0,0)
         plt.xlim(-max_value -10, max_value +10)
         plt.ylim(-max_value -10, max_value +10)
 
         # Create a scatter plot for ego ship and ground truth
-        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
-        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=250)
+        ax.scatter(0, 0, color='black', marker=">", label='Ego-ship', s=250)
+        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground truths', s=250)
         for index, ground_truth in enumerate(boat_pos_truth[frame]):
             ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 4, ground_truth[1] - 3), fontsize=9, zorder=1)
 
-        ax.scatter(x_coordinates_pred, y_coordinates_pred, color='orange', label='Predictions', s=250)
-        for pred in tracked_coordinate_predictions[frame]:
-            ax.annotate(f"#{pred[2]}", xy=(pred[0] - 4, pred[1] - 3), fontsize=9)
+        
+        
+        if without_zone_3:
+            ax.scatter(x_coordinates_pred, y_coordinates_pred, color='darkorange',  s=250) #label='Predictions', s=250)
+            for pred in filtered_tracked_coordinate_predictions[frame]:
+                ax.annotate(f"#{pred[2]}", xy=(pred[0] - 4, pred[1] - 3), fontsize=9)
 
+        else:
+            ax.scatter(x_coordinates_pred, y_coordinates_pred, color='darkorange',s=250) #label='Predictions', s=250)
+            for pred in tracked_coordinate_predictions[frame]:
+                ax.annotate(f"#{pred[2]}", xy=(pred[0] - 4, pred[1] - 3), fontsize=9)
+
+
+
+        ax.scatter(-1000, -1000, color='darkorange', label='Predictions', s=250)
         ax.legend(loc='upper left', fontsize=14)
 
         # Set the title and axis labels
         plt.title('Predictions for frame: ' + str(frame))
         
-        #plt.savefig(f"../../Figures/bev-frame-{frame}", dpi=150)
+        plt.savefig(f"../../Figures/bev-frame-{frame}-with-tracks", dpi=300)
+        
 
         # Show the plot
         #plt.show()
         
-        #return fig, ax
+        return fig, ax
     else:
         plt.title('No predictions for frame: ' + str(frame))
         plt.xlim(-max_value -10, max_value +10)
         plt.ylim(-max_value -10, max_value +10)
-
-        # Highlight the field of view using a pie chart
-        theta_fov = np.linspace(-np.pi/2 + np.deg2rad(180-127)/2, np.pi/2 - np.deg2rad(180-127)/2, 100)
-        r_fov = np.tan(np.deg2rad(63.5)) * max_value
-        x_fov = np.concatenate([[0], r_fov*np.cos(theta_fov), [0]])
-        y_fov = np.concatenate([[0], r_fov*np.sin(theta_fov), [0]])
-        ax.set_facecolor((1.0, 0.0, 0.0, 0.5))
-        ax.fill(x_fov, y_fov, alpha=1, color='w')
-        ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
-        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground Truths', s=250)
+        if without_zone_3:
+            plot_fov(ax, max_value=max_value, without_zone_3=without_zone_3)
+        else:
+            plot_fov(ax, max_value=max_value, without_zone_3=without_zone_3)
+        
+        ax.scatter(0, 0, color='black', marker=">", label='Ego-ship', s=250)
+        ax.scatter(x_coordinates_gt, y_coordinates_gt, label='Ground truths', s=250)
         for index, ground_truth in enumerate(boat_pos_truth[frame]):
             ax.annotate(f"#{index + 1}", xy=(ground_truth[0] - 4, ground_truth[1] - 3), fontsize=9, zorder=1)
+
+        ax.scatter(-1000, -1000, color='darkorange', label='Predictions', s=250)
         ax.legend(loc='upper left', fontsize=14)
         
     
-#create_birds_eye_view_for_frame(1300)
-# frames = 100
+frames = 6000
 
-# anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=75)
-# FFwriter = FFMpegWriter(fps=10)
-# anim.save('animation.mp4', writer = FFwriter)
+# Maybe change intervall to 100, generate 10 minute video corresponding to input
+#anim = FuncAnimation(fig, create_birds_eye_view_scatter, frames=frames, interval=100)
+#anim.save(f'../../Figures/new-tracks-gray-bev-{frames}-frames.gif', writer='pillow')
 
-#anim.save(f'../../Figures/bev-{frames}-frames.gif', writer='pillow')
+create_birds_eye_view_scatter(1300)
+
+
+
 
 
 # Returns paths for all tracks in input
@@ -206,31 +242,23 @@ def sort_tracks_by_length(tracks):
     return longest_tracks
 
 
-def sort_best_tracks(tracks):
-    path_of_tracks = filter_path_of_tracks(tracks)
-    # Evaluate track quality
-    
-
-    # Sort by quality
-
-    # Return tracks
-    
-    return 
-    
-
-def bev_path_of_tracks(track_coordinate_predictions, track_id):
+def bev_path_of_tracks(track_coordinate_predictions, track_id, is_pred):
     fig, ax = plt.subplots()
-    
-    max_value = 100
+
+    # Original value used for all plots
+    #max_value = 100
+
+    max_value = 60
     plt.xlim(-max_value -10, max_value +10)
     plt.ylim(-max_value -10, max_value +10)
+
 
     # Set the formatter function for the x and y axis tick labels
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(format_func))
     ax.yaxis.set_major_formatter(ticker.FuncFormatter(format_func))
 
-    plot_fov(ax, max_value)
-    ax.scatter(0, 0, color='black', marker=">", label='Egoship', s=250)
+    plot_fov(ax, max_value, without_zone_3=True)
+    ax.scatter(0, 0, color='black', marker=">", label='Ego-ship', s=250)
     
     # Get paths of all tracks
     path_of_tracks = filter_path_of_tracks(track_coordinate_predictions)
@@ -238,7 +266,10 @@ def bev_path_of_tracks(track_coordinate_predictions, track_id):
     # Get path of specific track
     coordinates = path_of_tracks[track_id]
 
-    print(coordinates)
+    #filtered_coords = filter_outliers_from_tracks(coordinates, 2000)
+    #print(filtered_coords)
+
+   
 
     min_timeframe = min(coordinates['timeframe'])
     max_timeframe = max(coordinates['timeframe'])
@@ -255,42 +286,44 @@ def bev_path_of_tracks(track_coordinate_predictions, track_id):
             else:
                 ground_truth_paths[id] = {'x': [boat[0]], 'y': [boat[1]]}
 
-    # ax.plot(ground_truth_paths[0]['x'], ground_truth_paths[0]['y'], linewidth=2, c='blue', label=f'Path for ship #1')
-    # ax.scatter(ground_truth_paths[0]['x'][0], ground_truth_paths[0]['y'][0], s=200, c='blue')
-    # ax.scatter(ground_truth_paths[0]['x'][-1], ground_truth_paths[0]['y'][-1], marker='X', s=200, c='blue')
+    if is_pred:
+        ax.plot(coordinates['x'], coordinates['y'], label=f"Path for track #{track_id if track_id != None else 'None'}", c='darkorange', linewidth=2)
+        ax.scatter(coordinates['x'][0], coordinates['y'][0], s=100, c='darkorange')
+        ax.scatter(coordinates['x'][-1], coordinates['y'][-1], marker='X', s=100, c='darkorange')
 
-    # ax.plot(ground_truth_paths[1]['x'], ground_truth_paths[1]['y'], linewidth=3, c='yellow', label=f'Path for ship #2')
-    # ax.scatter(ground_truth_paths[1]['x'][0], ground_truth_paths[1]['y'][0], s=200, c='yellow')
-    # ax.scatter(ground_truth_paths[1]['x'][-1], ground_truth_paths[1]['y'][-1], marker='X', s=200, c='yellow')
+        ax.legend(loc='upper left', fontsize=11)
+        plt.title(f'Path of prediction')
+        #plt.show()
+        plt.savefig(f"../../Figures/path-of-track-{track_id}", dpi=300)
 
-    # ax.plot(ground_truth_paths[2]['x'], ground_truth_paths[2]['y'], linewidth=3, c='green', label=f'Path for ship #3')
-    # ax.scatter(ground_truth_paths[2]['x'][0], ground_truth_paths[2]['y'][0], s=200, c='green')
-    # ax.scatter(ground_truth_paths[2]['x'][-1], ground_truth_paths[2]['y'][-1], marker='X', s=200, c='green')
+    else:
+        # ax.plot(ground_truth_paths[0]['x'], ground_truth_paths[0]['y'], linewidth=2, c='darkgreen', label=f'Path for ship #1')
+        # ax.scatter(ground_truth_paths[0]['x'][0], ground_truth_paths[0]['y'][0], s=100, c='blue')
+        # ax.scatter(ground_truth_paths[0]['x'][-1], ground_truth_paths[0]['y'][-1], marker='X', s=100, c='blue')
 
-    # ax.plot(ground_truth_paths[3]['x'], ground_truth_paths[3]['y'], linewidth=3, c='blue', label=f'Path for ship #4')
-    # ax.scatter(ground_truth_paths[3]['x'][0], ground_truth_paths[3]['y'][0], s=200, c='blue')
-    # ax.scatter(ground_truth_paths[3]['x'][-1], ground_truth_paths[3]['y'][-1], marker='X', s=200, c='blue')
-    
+        # ax.plot(ground_truth_paths[1]['x'], ground_truth_paths[1]['y'], linewidth=2, c='blue', label=f'Path for ship #2')
+        # ax.scatter(ground_truth_paths[1]['x'][0], ground_truth_paths[1]['y'][0], s=100, c='blue')
+        # ax.scatter(ground_truth_paths[1]['x'][-1], ground_truth_paths[1]['y'][-1], marker='X', s=100, c='blue')
 
-    # ax.plot(ground_truth_paths[4]['x'], ground_truth_paths[4]['y'], linewidth=3, c='blue', label=f'Path for ship #5')
-    # ax.scatter(ground_truth_paths[4]['x'][0], ground_truth_paths[4]['y'][0], s=200, c='pink')
-    # ax.scatter(ground_truth_paths[4]['x'][-1], ground_truth_paths[4]['y'][-1], marker='X', s=200, c='pink')
+        # ax.plot(ground_truth_paths[2]['x'], ground_truth_paths[2]['y'], linewidth=2, c='blue', label=f'Path for ship #3')
+        # ax.scatter(ground_truth_paths[2]['x'][0], ground_truth_paths[2]['y'][0], s=100, c='blue')
+        # ax.scatter(ground_truth_paths[2]['x'][-1], ground_truth_paths[2]['y'][-1], marker='X', s=100, c='blue')
 
-    ax.plot(coordinates['x'], coordinates['y'], label=f"Path for track #{track_id if track_id != None else 'None'}", c='orange', linewidth=3, alpha=0.9)
-    ax.scatter(coordinates['x'][0], coordinates['y'][0], s=200, c='orange')
-    ax.scatter(coordinates['x'][-1], coordinates['y'][-1], marker='X', s=200, c='orange')
-    
+        # ax.plot(ground_truth_paths[3]['x'], ground_truth_paths[3]['y'], linewidth=2, c='blue', label=f'Path for ship #4')
+        # ax.scatter(ground_truth_paths[3]['x'][0], ground_truth_paths[3]['y'][0], s=100, c='blue')
+        # ax.scatter(ground_truth_paths[3]['x'][-1], ground_truth_paths[3]['y'][-1], marker='X', s=100, c='blue')
+        
 
-    ax.legend(loc='upper left', fontsize=11)
-    plt.title(f'Frames {min_timeframe} to {max_timeframe}')
-    plt.show()
-    #plt.savefig(f"../../Figures/path-of-track-{track_id}", dpi=150)
+        # ax.plot(ground_truth_paths[4]['x'], ground_truth_paths[4]['y'], linewidth=2, c='blue', label=f'Path for ship #5')
+        # ax.scatter(ground_truth_paths[4]['x'][0], ground_truth_paths[4]['y'][0], s=100, c='blue')
+        # ax.scatter(ground_truth_paths[4]['x'][-1], ground_truth_paths[4]['y'][-1], marker='X', s=100, c='blue')
+
+        ax.legend(loc='upper left', fontsize=11)
+        plt.title(f'Path of ground truth')
+        #plt.show()
+        plt.savefig(f"../../Figures/nearest-ground-truth-path-of-track-{track_id}", dpi=300)
 
 
-#longest_track = sort_tracks_by_length(tracked_coordinate_predictions)[0]
-#longest_track = sort_tracks_by_length(tracked_coordinate_predictions)[1]
-#longest_track = sort_tracks_by_length(tracked_coordinate_predictions)[2]
 
-#bev_path_of_tracks(tracked_coordinate_predictions, longest_track[1], longest_track[0])
-
-bev_path_of_tracks(tracked_coordinate_predictions, 318)
+# Only tracking paths of filtered predictions
+#bev_path_of_tracks(filtered_tracked_coordinate_predictions, 429, is_pred=True)
